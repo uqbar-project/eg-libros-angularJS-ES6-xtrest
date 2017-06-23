@@ -53,7 +53,7 @@ class LibrosController {
     }
 
     guardarLibro() {
-        this.librosService.update(this.libroSeleccionado, function() {
+        this.librosService.update(this.libroSeleccionado, () => {
             this.notificarMensaje('Libro actualizado!')
             this.actualizarLista()
         }, this.errorHandler)
@@ -74,7 +74,7 @@ class LibrosController {
     }
 
     notificar(mensajes) {
-        this.$timeout(function() {
+        this.$timeout(() => {
             while (mensajes.length > 0) mensajes.pop()
         }, 3000)
     }

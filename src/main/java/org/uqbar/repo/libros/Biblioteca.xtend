@@ -51,8 +51,8 @@ class Biblioteca {
 	}
 	
 	def actualizarLibro(Libro libro) {
-		libros.remove(libro)
-		libros.add(libro.id - 1, libro)
+		val posicion = libros.indexOf(libro)
+		libros.set(posicion, libro)
 	}
 
 	def eliminarLibro(Libro libro) {
