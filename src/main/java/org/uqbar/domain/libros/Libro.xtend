@@ -25,7 +25,7 @@ class Libro {
 	override equals(Object obj) {
 		try {
 			val otro = obj as Libro
-			otro.id == this.id
+			otro.id === this.id
 		} catch (ClassCastException e) {
 			return false
 		}

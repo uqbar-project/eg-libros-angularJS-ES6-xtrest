@@ -38,13 +38,12 @@ class LibrosController {
 
 	@Get('/libros/:id')
 	def Result libro() {
-		val iId = Integer.valueOf(id)
-		
 		try {
-			response.contentType = "application/json"
-			ok(Biblioteca.instance.getLibro(iId).toJson)
-		} 
-		catch (UserException e) {
+			response.contentType = ContentType.APPLICATION_JSON
+			ok(Biblioteca.instance.getLibro(Integer.valueOf(id)).toJson)
+		} catch (NumberFormatException ex) {
+        	badRequest(getErrorJson("El id debe ser un numero entero"))
+        } catch (UserException e) {
 			notFound("No existe libro con id '" + id + "'");
 		}
 	}
@@ -52,23 +51,27 @@ class LibrosController {
 	@Delete('/libros/:id')
 	def Result eliminarLibro() {
 		try {
-			val iId = Integer.valueOf(id)
+			response.contentType = ContentType.APPLICATION_JSON
 			val biblioteca = Biblioteca.instance
-			biblioteca.eliminarLibro(biblioteca.getLibro(iId))
+			biblioteca.eliminarLibro(biblioteca.getLibro(Integer.valueOf(id)))
 			ok('''{ "status" : "ok" }''')
-		} catch (UserException e) {
+		} catch (NumberFormatException ex) {
+        	badRequest(getErrorJson("El id debe ser un numero entero"))
+        } catch (UserException e) {
 			return notFound("No existe libro con id '" + id + "'");
 		}
 	}
 
 	@Get('/libros/search')
 	def Result buscar(String titulo) {
+		response.contentType = ContentType.APPLICATION_JSON
 		ok(Biblioteca.instance.buscar(titulo).toJson)
 	}
 
 	@Post('/libros')
 	def Result agregarLibro(@Body String body) {
 		try {
+			response.contentType = ContentType.APPLICATION_JSON
 			if (body == null || body.trim.equals("")) {
 				return badRequest("Faltan datos del libro a agregar")
 			}
@@ -77,26 +80,28 @@ class LibrosController {
 			val nuevoLibro = Biblioteca.instance.addLibro(nuevo.titulo, nuevo.autor)
 
 			ok('''{ "id" : "«nuevoLibro.id»" }''')
-		} 
-		catch (UserException e) {
-			// badRequest(''' { "error" : "«e.message»" }''')
-			badRequest(e.message)
+		} catch (UserException e) {
+			badRequest(getErrorJson(e.message))
 		}
 	}
 
 	@Put('/libros/:id')
 	def Result actualizar(@Body String body) {
+		response.contentType = ContentType.APPLICATION_JSON
 		val actualizado = body.fromJson(Libro)
 		if (Integer.parseInt(id) != actualizado.id) {
 			return badRequest('{ "error" : "Id en URL distinto del cuerpo" }')
 		}
-
 		Biblioteca.instance.actualizarLibro(actualizado)
 		ok('{ "status" : "OK" }');
 	}
 
 	def static void main(String[] args) {
-		XTRest.start(LibrosController, 9200)
+		XTRest.start(9200, LibrosController)
 	}
+
+    private def getErrorJson(String message) {
+        '{ "error": "' + message + '" }'
+    }
 
 }
