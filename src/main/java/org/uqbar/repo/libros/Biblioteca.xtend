@@ -2,6 +2,7 @@ package org.uqbar.repo.libros
 
 import java.util.List
 import org.uqbar.domain.libros.Libro
+import org.uqbar.domain.libros.exceptions.UserException
 
 class Biblioteca {
 
@@ -47,7 +48,12 @@ class Biblioteca {
 	}
 
 	def getLibro(Integer idLibro) {
-		libros.findFirst [ libro | libro.id == idLibro ]
+		val libro = libros.findFirst [ libro | libro.id == idLibro ]
+		if (libro === null) {
+			throw new UserException('''No existe libro con id «idLibro».''')
+		} else {
+			libro
+		}
 	}
 	
 	def actualizarLibro(Libro libro) {
@@ -60,11 +66,11 @@ class Biblioteca {
 	}	
 	
 	def buscar(String valor) {
-		libros.filter [ libro | libro.coincideCon(valor) ]	
+		libros.filter [ libro | libro.coincideCon(valor) ].toList
 	}
 	
 	static def getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new Biblioteca
 		}
 		instance

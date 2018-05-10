@@ -10,10 +10,10 @@ class Libro {
 	String autor
 	
 	def validar() {
-		if (titulo == null || titulo.trim.equals("")) {
+		if (titulo === null || titulo.trim.equals("")) {
 			throw new UserException("Debe ingresar titulo")
 		}
-		if (autor == null || autor.trim.equals("")) {
+		if (autor === null || autor.trim.equals("")) {
 			throw new UserException("Debe ingresar autor")
 		}
 	}

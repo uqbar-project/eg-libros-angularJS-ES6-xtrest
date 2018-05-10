@@ -11,7 +11,6 @@ import org.uqbar.xtrest.api.annotation.Delete
 import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.api.annotation.Post
 import org.uqbar.xtrest.api.annotation.Put
-import org.uqbar.xtrest.http.ContentType
 import org.uqbar.xtrest.json.JSONUtils
 
 /**
@@ -23,56 +22,44 @@ import org.uqbar.xtrest.json.JSONUtils
 class LibrosController {
 	extension JSONUtils = new JSONUtils
 
-	//	@Filter("/*")
-	//	def defineJsonContentType(HandlerChain chain) {
-	//		response.contentType = "application/json"
-	//		chain.proceed
-	//	}
-	
 	@Get("/libros")
 	def Result libros() {
-		val libros = Biblioteca.instance.todos
-		response.contentType = ContentType.APPLICATION_JSON
-		ok(libros.toJson)
+		ok(Biblioteca.instance.todos.toJson)
 	}
 
 	@Get('/libros/:id')
 	def Result libro() {
 		try {
-			response.contentType = ContentType.APPLICATION_JSON
 			ok(Biblioteca.instance.getLibro(Integer.valueOf(id)).toJson)
 		} catch (NumberFormatException ex) {
         	badRequest(getErrorJson("El id debe ser un numero entero"))
         } catch (UserException e) {
-			notFound("No existe libro con id '" + id + "'");
+			notFound(getErrorJson(e.message));
 		}
 	}
 
 	@Delete('/libros/:id')
 	def Result eliminarLibro() {
 		try {
-			response.contentType = ContentType.APPLICATION_JSON
 			val biblioteca = Biblioteca.instance
 			biblioteca.eliminarLibro(biblioteca.getLibro(Integer.valueOf(id)))
 			ok('''{ "status" : "ok" }''')
 		} catch (NumberFormatException ex) {
         	badRequest(getErrorJson("El id debe ser un numero entero"))
         } catch (UserException e) {
-			return notFound("No existe libro con id '" + id + "'");
+			notFound(getErrorJson(e.message));
 		}
-	}
+	} 
 
 	@Get('/libros/search')
 	def Result buscar(String titulo) {
-		response.contentType = ContentType.APPLICATION_JSON
 		ok(Biblioteca.instance.buscar(titulo).toJson)
 	}
 
 	@Post('/libros')
 	def Result agregarLibro(@Body String body) {
 		try {
-			response.contentType = ContentType.APPLICATION_JSON
-			if (body == null || body.trim.equals("")) {
+			if (body === null || body.trim.equals("")) {
 				return badRequest("Faltan datos del libro a agregar")
 			}
 			val nuevo = body.fromJson(Libro)
@@ -87,7 +74,6 @@ class LibrosController {
 
 	@Put('/libros/:id')
 	def Result actualizar(@Body String body) {
-		response.contentType = ContentType.APPLICATION_JSON
 		val actualizado = body.fromJson(Libro)
 		if (Integer.parseInt(id) != actualizado.id) {
 			return badRequest('{ "error" : "Id en URL distinto del cuerpo" }')
@@ -96,12 +82,12 @@ class LibrosController {
 		ok('{ "status" : "OK" }');
 	}
 
+    private def String getErrorJson(String message) {
+        '''{ "error" : "«message»" }'''
+    }
+
 	def static void main(String[] args) {
 		XTRest.start(9200, LibrosController)
 	}
-
-    private def getErrorJson(String message) {
-        '{ "error": "' + message + '" }'
-    }
 
 }

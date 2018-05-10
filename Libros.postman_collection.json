@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "8a33fe2c-0a74-4ddb-bc68-8713a6fad4df",
+		"name": "Libros",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Todos los libros",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:9200/libros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Libro 6 - OK",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:9200/libros/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Libro 42 - Not Found",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:9200/libros/42",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Libro XX - Bad Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:9200/libros/XX",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros",
+						"XX"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Libro 6",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:9200/libros/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear libro",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"titulo\": \"Cartas Marcadas\",\n    \"autor\": \"Alejandro Dolina\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9200/libros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar libro",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 2,\n    \"titulo\": \"Bar del Infierno\",\n    \"autor\": \"Alejandro Dolina\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9200/libros/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar libros",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic dGluY2hvZGlhczoxMjM="
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"id\": 19, \"titulo\": \"Fervor de Buenos Aires\" }"
+				},
+				"url": {
+					"raw": "http://localhost:9200/libros/search?titulo=Bor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"libros",
+						"search"
+					],
+					"query": [
+						{
+							"key": "titulo",
+							"value": "Bor"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
