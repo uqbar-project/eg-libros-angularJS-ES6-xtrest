@@ -2,33 +2,36 @@
 <html lang="en" ng-app="librosApp">
 
 <head>
-  <meta charset="utf-8">
-  <title>Ejemplo de Libros en AngularJS</title>
+	<meta charset="utf-8">
+	<title>Ejemplo de Libros en AngularJS</title>
 
-  <!-- JQUERY -->
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<!-- JQUERY -->
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 
-  <!-- BOOTSTRAP -->
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
-  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- BOOTSTRAP -->
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-  <!-- ANGULAR -->
-  <script src="node_modules/angular/angular.min.js"></script>
-  <script src="node_modules/angular-route/angular-route.min.js"></script>
-  <script src="node_modules/angular-resource/angular-resource.min.js"></script>
-	
+	<!-- ANGULAR -->
+	<script src="node_modules/angular/angular.min.js"></script>
+	<script src="node_modules/angular-route/angular-route.min.js"></script>
+	<script src="node_modules/angular-resource/angular-resource.min.js"></script>
+
 	<!-- BOOTBOX (dialogos de confirmacion) http://bootboxjs.com/ -->
 	<script src="node_modules/bootbox/bootbox.min.js"></script>
-	
-	<!-- ANGULAR  -->
-	<script src="node_modules/angular-animate/angular-animate.js"></script>
-	
-  <link rel="stylesheet" href="css/libros.css"/>
+
+	<!-- GROWL (notificaciones) https://github.com/JanStevens/angular-growl-2 -->
+	<link href="node_modules/angular-growl-v2/build/angular-growl.css" rel="stylesheet">
+	<script src="node_modules/angular-growl-v2/build/angular-growl.js"></script>
+
+	<link rel="stylesheet" href="css/libros.css"/>
 </head>
 
 <body data-ng-controller="TodosLosLibrosCtrl as LibroCtrl">
-	
+
+<div growl></div>
+
 <div class="navbar-header">
     <a class="navbar-brand" rel="home" href="#" title="Libros">
     	<img style="max-width:100px; margin-top: -7px;" src="images/logo-libros.jpg">
@@ -40,13 +43,6 @@
 	  <h1>Librer&iacute;a RIA <small>AngularJS + XTRest</small></h1>
 	</div>
 	
-	<!-- Mensajes -->
-	<div class="row">
-		<ul class="example-animate-container">
-			<li class="message bg-success animate-repeat" data-ng-repeat="msg in LibroCtrl.msgs">{{msg}}</li>
-		</ul>
-	</div>
-
 	<div class="row">
 
 		<!-- Busqueda y resultados -->
@@ -55,20 +51,20 @@
 					<form role="form">
 						<div class="form-group">
 							<label for="libroBuscado">Buscar</label> 
-							<input ng-model="libroBuscado" class="form-control" id="libroBuscado" placeholder="Titulo o Autor">
+							<input ng-model="libroBuscado" class="form-control" id="libroBuscado" placeholder="Título o Autor">
 						</div>
 					</form>
 			</div>
 			<div class="table-responsive">
-			 <table class="table table-striped table-hover table-condensed example-animate-container">
+			 <table class="table table-striped table-hover table-condensed">
 			 	<tbody>
 				 	<tr>
 				 		<th>#</th>
-				 		<th>Titulo</th>
+				 		<th>Título</th>
 				 		<th>Autor</th>
 				 		<th>&nbsp;</th>
 				 	</tr>
-					<tr data-ng-repeat="libro in LibroCtrl.libros | filter:libroBuscado" class="animate-repeat">
+					<tr data-ng-repeat="libro in LibroCtrl.libros | filter:libroBuscado">
 						<td class="col-xs-1">{{libro.id}}</td>
 						<td class="col-xs-5">{{libro.titulo}}</td>
 						<td class="col-xs-4">{{libro.autor}}</td>
@@ -94,21 +90,18 @@
 			<h2>Agregar Libro</h2>
 			<div>
 				<form name="agregarLibroForm" role="form">
-			  	<fieldset>
-				    <div class="form-group">
-			    	  	<label for="titulo">Titulo</label>
-			      		<input data-ng-model="LibroCtrl.nuevoLibro.titulo" type="text" id="titulo" class="form-control" placeholder="Cien Años de Soledad">
-			    	</div>
-			    	<div class="form-group">
-			      		<label for="autor">Autor</label>
-			      		<input data-ng-model="LibroCtrl.nuevoLibro.autor" type="text" id="disabledTextInput" class="form-control" placeholder="Gabriel García Marquez">
-			    	</div>
-			    	<button type="submit" class="btn btn-primary" data-ng-click="LibroCtrl.agregarLibro()">Guardar</button>
-			    	
-			    	<div class="example-animate-container" style="padding-top:10px">
-              	<div class="alert alert-danger animate-repeat" ng-repeat="error in LibroCtrl.errors">{{error}}</div>
-            </div>
-			  	</fieldset>
+					<fieldset>
+						<div class="form-group">
+							<label for="titulo">Título</label>
+							<input data-ng-model="LibroCtrl.nuevoLibro.titulo" type="text" id="titulo" class="form-control" placeholder="Cien Años de Soledad">
+						</div>
+						<div class="form-group">
+							<label for="autor">Autor</label>
+							<input data-ng-model="LibroCtrl.nuevoLibro.autor" type="text" id="disabledTextInput" class="form-control" placeholder="Gabriel García Marquez">
+						</div>
+						<button type="submit" class="btn btn-primary" data-ng-click="LibroCtrl.agregarLibro()">Guardar</button>
+						
+					</fieldset>
 				</form>
 			</div>
 		</div>
@@ -141,20 +134,16 @@
             <div class="modal-body">
                 <h3>"{{LibroCtrl.libroSeleccionado.titulo}}", de <i>{{LibroCtrl.libroSeleccionado.autor}}</i></h3>
                 <form name="editarLibroForm" role="form">
-			  	<fieldset>
-				    <div class="form-group">
-			    	  	<label for="titulo">Titulo</label>
-			      		<input data-ng-model="LibroCtrl.libroSeleccionado.titulo" type="text" class="form-control">
-			    	</div>
-			    	<div class="form-group">
-			      		<label for="autor">Autor</label>
-			      		<input data-ng-model="LibroCtrl.libroSeleccionado.autor" type="text" class="form-control">
-			    	</div>
-	
-			    	<div class="example-animate-container" style="padding-top:10px">
-                    	<div class="alert alert-danger animate-repeat" ng-repeat="error in LibroCtrl.errors">{{error}}</div>
-	                </div>
-			  	</fieldset>
+					<fieldset>
+						<div class="form-group">
+							<label for="titulo">Título</label>
+							<input data-ng-model="LibroCtrl.libroSeleccionado.titulo" type="text" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="autor">Autor</label>
+							<input data-ng-model="LibroCtrl.libroSeleccionado.autor" type="text" class="form-control">
+						</div>
+					</fieldset>
 				</form>
                 
             </div>
