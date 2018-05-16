@@ -60,7 +60,7 @@ class LibrosController {
 	def Result agregarLibro(@Body String body) {
 		try {
 			if (body === null || body.trim.equals("")) {
-				return badRequest("Faltan datos del libro a agregar")
+				return badRequest(getErrorJson("Faltan datos del libro a agregar"))
 			}
 			val nuevo = body.fromJson(Libro)
 			nuevo.validar
