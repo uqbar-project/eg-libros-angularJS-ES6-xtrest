@@ -1,3 +1,14 @@
-.message {
-	padding-left: 20px;
+.libros-logo {
+	max-width: 100px; 
+	margin-top: -7px;
+}
+
+.libros-btn-modificar {
+	color: white;
+	background-color: darkcyan;
+}
+
+.libros-btn-eliminar {
+	color: white;
+	background-color: crimson;
 }
