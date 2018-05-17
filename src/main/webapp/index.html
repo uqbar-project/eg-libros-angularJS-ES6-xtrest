@@ -48,7 +48,7 @@
 					<form role="form">
 						<div class="form-group">
 							<label for="libroBuscado">Buscar</label> 
-							<input ng-model="libroBuscado" class="form-control" id="libroBuscado" placeholder="Título o Autor">
+							<input data-ng-model="libroBuscado" class="form-control" placeholder="Título o Autor">
 						</div>
 					</form>
 			</div>
@@ -87,11 +87,11 @@
 					<fieldset>
 						<div class="form-group">
 							<label for="titulo">Título</label>
-							<input data-ng-model="LibroCtrl.libroParaAgregar.titulo" type="text" id="titulo" class="form-control" placeholder="Cien Años de Soledad">
+							<input data-ng-model="LibroCtrl.libroParaAgregar.titulo" type="text" class="form-control" placeholder="Cien Años de Soledad">
 						</div>
 						<div class="form-group">
 							<label for="autor">Autor</label>
-							<input data-ng-model="LibroCtrl.libroParaAgregar.autor" type="text" id="disabledTextInput" class="form-control" placeholder="Gabriel García Marquez">
+							<input data-ng-model="LibroCtrl.libroParaAgregar.autor" type="text" class="form-control" placeholder="Gabriel García Marquez">
 						</div>
 						<button type="submit" class="btn btn-primary" data-ng-click="LibroCtrl.agregarLibro()">Agregar</button>
 						
@@ -109,7 +109,7 @@
         <div class="modal-content">
             <div class="modal-header">
             	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            	<h4 class="modal-title" id="myModalLabel">Modiicar Libro</h4>
+            	<h4 class="modal-title">Modificar Libro</h4>
             </div>
             <div class="modal-body">
                 <h3>"{{LibroCtrl.libroParaModificar.titulo}}", de <i>{{LibroCtrl.libroParaModificar.autor}}</i></h3>
