@@ -4,11 +4,14 @@ class LibrosController {
         this.librosService = librosService
         this.libroParaModificar = null
         this.libroParaAgregar = null
+        this.busqueda = ""
         this.growl = growl
         this.errorHandler = (response) => {
+            // confiamos en que cuando hay un error, el servidor 
+            // devuelve en el body un json de la forma { "error": <mensaje de error> }
             this.notificarError(response.data.error)
         }
-        this.actualizarLista()
+        this.resetLibros()
     }
 
     // NOTIFICACIONES & ERRORES
@@ -20,18 +23,28 @@ class LibrosController {
         this.growl.error(mensaje)
     }
 
-    // LISTAR
-    actualizarLista() {
-        this.librosService.listar().then((response) => {
+    // BUSCAR
+    buscarLibros() {
+        const promise = (this.busqueda == "") ?
+            this.librosService.listarTodos() :
+            this.librosService.buscar(this.busqueda)
+
+        promise.then((response) => {
             this.libros = response.data
         }, this.errorHandler)
+    }
+
+    // LISTAR
+    resetLibros() {
+        this.busqueda = ""
+        this.buscarLibros()
     }
 
     // AGREGAR
     agregarLibro() {
         this.librosService.agregar(this.libroParaAgregar).then((response) => {
             this.notificarMensaje("¡Libro agregado con # " + response.data.id + "!")
-            this.actualizarLista()
+            this.resetLibros()
             this.libroParaAgregar = null
         }, this.errorHandler)
     }
@@ -55,7 +68,7 @@ class LibrosController {
                 if (confirma) {
                     this.librosService.eliminar(libro).then(() => {
                         this.notificarMensaje('¡Libro eliminado!')
-                        this.actualizarLista()
+                        this.resetLibros()
                     }, this.errorHandler)
                 }
             }})
@@ -71,7 +84,7 @@ class LibrosController {
     aplicarModificacion() {
         this.librosService.modificar(this.libroParaModificar).then(() => {
             this.notificarMensaje('¡Libro modificado!')
-            this.actualizarLista()
+            this.resetLibros()
         }, this.errorHandler)
 
         this.libroParaModificar = null

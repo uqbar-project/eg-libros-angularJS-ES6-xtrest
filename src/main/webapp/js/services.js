@@ -1,9 +1,15 @@
 const librosService = ($http) => {
     return {
-        listar: () => {
+        listarTodos: () => {
             return $http({
                 method: "GET",
                 url: "libros"
+            })
+        },
+        buscar: (busqueda) => {
+            return $http({
+                method: "GET",
+                url: "libros/search?titulo=" + busqueda
             })
         },
         modificar: (libro) => {

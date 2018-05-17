@@ -3,6 +3,10 @@
 	margin-top: -7px;
 }
 
+.libros-busqueda {
+	margin-bottom: 20px;
+}
+
 .libros-btn-modificar {
 	color: white;
 	background-color: darkcyan;
