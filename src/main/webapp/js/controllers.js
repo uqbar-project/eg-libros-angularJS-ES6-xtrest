@@ -1,15 +1,20 @@
 class LibrosController {
     constructor(librosService, growl) {
-        this.libros = []
         this.librosService = librosService
+        this.growl = growl
+        this.libros = []
+        this.busqueda = ""
         this.libroParaModificar = null
         this.libroParaAgregar = null
-        this.busqueda = ""
-        this.growl = growl
         this.errorHandler = (response) => {
-            // confiamos en que cuando hay un error, el servidor 
-            // devuelve en el body un json de la forma { "error": <mensaje de error> }
-            this.notificarError(response.data.error)
+            if (response.data) {
+              // confiamos en que cuando hay un error, el servidor
+              // devuelve en el body un json de la forma { "error": <mensaje de error> }
+              this.notificarError(response.data.error)
+            } else {
+              // si no hay respuesta, debe ser porque hubo error de conexión
+              this.notificarError("Error de conexión, intente nuevamente luego.")
+            }
         }
         this.resetLibros()
     }
