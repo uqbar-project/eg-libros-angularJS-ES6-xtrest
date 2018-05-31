@@ -77,7 +77,7 @@ class LibrosController {
     // MODIFICAR
     modificarLibro(libro) {
         // Copiamos al libro porque sino al cerrar el diálogo queda modificado en la lista
-    	this.libroParaModificar = {...libro}
+    	this.libroParaModificar = Object.assign({}, libro);
         $("#modificarLibroModal").modal({})
     }
 
